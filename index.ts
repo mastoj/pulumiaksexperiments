@@ -1,4 +1,5 @@
 import { getClientConfig, PrincipalType, RoleAssignment } from "@pulumi/azure-native/authorization";
+import { Registry, SkuName } from "@pulumi/azure-native/containerregistry";
 import { listManagedClusterUserCredentials, ManagedCluster } from "@pulumi/azure-native/containerservice";
 import { OSType } from "@pulumi/azure-native/containerservice/v20170831";
 import { Subnet, VirtualNetwork } from "@pulumi/azure-native/network";
@@ -56,15 +57,17 @@ const aks = new ManagedCluster(`${prefix}-aks`, {
             name: "agentpool",
             mode: "System",
             count: 2,
+            minCount: 2,
             maxCount: 10,
-            vmSize: "Standard_A1_v2",
+            vmSize: "Standard_B2ms",
             osType: OSType.Linux,
             maxPods: 110,
             vnetSubnetID: subnet.id,
+            enableAutoScaling: true,
         }
     ],
     servicePrincipalProfile: {
-        clientId: adSp.id,
+        clientId: adApp.applicationId,
         secret: adSpPassword.value,
     },
     enableRBAC: true,
@@ -88,5 +91,21 @@ const kubeCredentials =
         }));
 
 const decodeBase64 = (str: string) => Buffer.from(str, "base64").toString("ascii");
+
+const acr = new Registry(`${prefix}-acr`, {
+    registryName: "pulumiaksdemo",
+    resourceGroupName: resourceGroup.name,
+    sku: {
+        name: SkuName.Basic,
+    },
+    adminUserEnabled: false,    
+})
+
+const acrAssignment = new RoleAssignment("acr-permissions", {
+    principalId: adSp.id,
+    principalType: PrincipalType.ServicePrincipal,
+    roleDefinitionId: subscriptionId.then(y =>`/subscriptions/${y}/providers/Microsoft.Authorization/roleDefinitions/7f951dda-4ed3-4680-a7ca-43fe172d538d`),
+    scope: acr.id,
+});
 
 export const kubeConfig = pulumi.secret(kubeCredentials.kubeconfigs[0].value.apply(decodeBase64))
