@@ -1,11 +1,11 @@
 config:
-  azure-native:clientId: eb37d544-cd57-4970-bc09-a70e049193ad
+  azure-native:clientId: ad0c5415-3b94-413e-acf0-a02e15d05a90
   azure-native:clientSecret:
-    secure: AAABAKP7ff4A6JzELwQgbbqBM5HeqVNDZph0wIJrj3Lc1RxNWDnQYTGLPWMyPTvPJ6QGVmsb9zNyzkaCQIVM71hw
+    secure: AAABAPx4TV4XNx14uUShr0kERsd69L22OxwlWMTX315EOLFgj9N0RHQfxEJ8a5DvYr7O6LohDDPi9S1pUKCR/hYf
   azure-native:location: westeurope
   azure-native:subscriptionId: 83a383e9-f8c5-4fe0-b11a-8b59d8c22f2e
   azure-native:tenantId: 053ac3d7-7efe-4c7a-95eb-b97b59e68b82
-  azuread:clientId: eb37d544-cd57-4970-bc09-a70e049193ad
+  azuread:clientId: ad0c5415-3b94-413e-acf0-a02e15d05a90
   azuread:clientSecret:
-    secure: AAABAI8j9o8rJfsmYaBSfyGNA15jnVTe6UmQkgRbVVupi2XPOHd5hIUG/c7lvOsArUqQSHemnEOiNmV6+ziT7kh9
+    secure: AAABABo2spBxqPGcmoZg3AywsCOueYsuSokfh5VcOpQrYDTOzn87dkPUq06wrATkR1xPfTXuiORYRfLAu3qGEpfA
   azuread:tenantId: 053ac3d7-7efe-4c7a-95eb-b97b59e68b82
