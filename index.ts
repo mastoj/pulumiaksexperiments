@@ -1,7 +1,8 @@
 import { getClientConfig } from "@pulumi/azure-native/authorization";
 import { ResourceGroup } from "@pulumi/azure-native/resources";
-import { Cluster } from "./cluster";
+import { Cluster } from "./aks";
 import { Acr } from "./acr";
+import { Linkerd } from "./linkerd";
 
 const prefix = "aksdemo";
 
@@ -19,4 +20,5 @@ const acr = new Acr(`${prefix}-acr`, {
     resourceGroupName: resourceGroup.name,
 })
 
+const linkerd = new Linkerd(`${prefix}-linkerd`, { dependsOn: [cluster] });
 export const kubeConfig = cluster.kubeConfig;

@@ -42,7 +42,7 @@
     shell-quote "^1.6.1"
     tmp "^0.0.33"
 
-"@pulumi/pulumi@^3.0.0":
+"@pulumi/pulumi@^3.0.0", "@pulumi/pulumi@^3.35.3":
   version "3.35.3"
   resolved "https://registry.yarnpkg.com/@pulumi/pulumi/-/pulumi-3.35.3.tgz#dcadc9fba915f0f651ba20db85bc289a4697007f"
   integrity sha512-FguC6qNFC6s+hXepEWVhZypDSLZSNk952chES1Q056nyFjQ41xZ2j3VEg2mY3Xhbeyd1SOIJoErD2eCOR751Ww==
