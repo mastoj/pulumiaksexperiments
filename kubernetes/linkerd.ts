@@ -1,50 +1,5 @@
-import { ConfigFile } from '@pulumi/kubernetes/yaml';
-import { ComponentResource, ComponentResourceOptions, Output, Input, Config } from '@pulumi/pulumi'
-
-type VizArgs = { }
-class Viz extends ComponentResource {
-
-    constructor(name: string, args: {  }, opts?: ComponentResourceOptions) {
-        super("tomasja:Viz", name, args, opts);
-
-        const vizConfig = new Config("viz");
-
-        const tapCrt = vizConfig.getSecret("tapCrt");
-        const tapKey = vizConfig.getSecret("tapKey");
-        const tapInjectorCrt = vizConfig.getSecret("tapInjectorCrt");
-        const tapInjectorKey = vizConfig.getSecret("tapInjectorKey");
-        const viz = new ConfigFile("viz", {
-            file: "linkerd/viz.yml",
-            transformations: [
-                (obj: any) => {
-                    if (obj.kind === "Secret" && obj.metadata.name === "tap-k8s-tls") {
-                        obj.data["tls.crt"] = tapCrt;
-                        obj.data["tls.key"] = tapKey;
-                    }
-                },
-                (obj: any) => {
-                    if (obj.kind === "APIService" && obj.metadata.name === "v1alpha1.tap.linkerd.io") {
-                        obj.spec.caBundle = tapCrt;
-                    }
-                },
-                (obj: any) => {
-                    if (obj.kind === "Secret" && obj.metadata.name === "tap-injector-k8s-tls") {
-                        obj.data["tls.crt"] = tapInjectorCrt;
-                        obj.data["tls.key"] = tapInjectorKey;
-                    }
-                },
-                (obj: any) => {
-                    if (obj.kind === "MutatingWebhookConfiguration" && obj.metadata.name === "linkerd-tap-injector-webhook-config") {
-                        obj.webhooks[0].clientConfig.caBundle = tapInjectorCrt;
-                    }
-                },
-           ],
-        }, {
-            ...opts,
-            parent: this,
-        });
-    }
-}
+import { ConfigFile } from "@pulumi/kubernetes/yaml";
+import { ComponentResource, ComponentResourceOptions, Config } from "@pulumi/pulumi";
 
 export type LinkerdArgs = {
 }
@@ -67,7 +22,7 @@ export class Linkerd extends ComponentResource {
         const spValidatorKey = config.getSecret("spValidatorKey");
 
         const linkerd = new ConfigFile("linkerd", {
-            file: "linkerd/manifest.yml",
+            file: "kubernetes/linkerd.yml",
             transformations: [
                 (obj: any) => {
                     if (obj.kind === "Secret" && obj.metadata.name === "linkerd-config-overrides") {
@@ -118,7 +73,5 @@ export class Linkerd extends ComponentResource {
             ...opts,
             parent: this,
         });
-
-        const viz = new Viz("viz", {}, { parent: this, dependsOn: [this] });
     }
 }

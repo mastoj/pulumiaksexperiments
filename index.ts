@@ -1,24 +1,18 @@
-import { getClientConfig } from "@pulumi/azure-native/authorization";
-import { ResourceGroup } from "@pulumi/azure-native/resources";
-import { Cluster } from "./aks";
-import { Acr } from "./acr";
-import { Linkerd } from "./linkerd";
+import { Kubernetes } from "./kubernetes";
+import { Provider as KubernetesProvider } from "@pulumi/kubernetes";
+import { Azure } from "./azure";
+import * as pulumi from "@pulumi/pulumi";
 
 const prefix = "aksdemo";
 
-const clientConfig = getClientConfig();
-const subscriptionId = clientConfig.then(y => y.subscriptionId);
+const azure = new Azure(`${prefix}-azure`, prefix, {});
 
-const resourceGroup = new ResourceGroup(`${prefix}-rg`);
-const cluster = new Cluster(`${prefix}-cluster`, { 
-    resourceGroupName: resourceGroup.name,
-    subscriptionId: subscriptionId,
+const k8sProvider = new KubernetesProvider(`${prefix}-k8s`, { 
+    kubeconfig: azure.kubeConfig,
 });
-const acr = new Acr(`${prefix}-acr`, {
-    subscriptionId: subscriptionId,
-    servicePrincipalId: cluster.servicePrincipalId,
-    resourceGroupName: resourceGroup.name,
-})
+const kubernetes = new Kubernetes(`${prefix}-kubernetes`, {}, { provider: k8sProvider });
 
-const linkerd = new Linkerd(`${prefix}-linkerd`, { dependsOn: [cluster] });
-export const kubeConfig = cluster.kubeConfig;
+export const kubeConfig = azure.kubeConfig;
+export const getAksCredentials = 
+    pulumi.all([azure.clusterName, azure.resourceGroupName])
+        .apply(([clusterName, resourceGroupName]) => `az aks get-credentials -n ${clusterName} -g ${resourceGroupName}`);
