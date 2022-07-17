@@ -1,10 +1,11 @@
 import { ConfigFile } from "@pulumi/kubernetes/yaml";
-import { ComponentResource, ComponentResourceOptions, Config } from "@pulumi/pulumi";
+import { ComponentResource, ComponentResourceOptions, Config, CustomResource, Output } from "@pulumi/pulumi";
 
 export type LinkerdArgs = {
 }
 
 export class Linkerd extends ComponentResource {
+    public ready: Output<CustomResource[]>;
 
     constructor(name: string, args: LinkerdArgs, opts?: ComponentResourceOptions) {
         super("tomasja:Linkerd", name, args, opts);
@@ -73,5 +74,6 @@ export class Linkerd extends ComponentResource {
             ...opts,
             parent: this,
         });
+        this.ready = linkerd.ready;
     }
 }

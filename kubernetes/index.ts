@@ -8,7 +8,7 @@ export class Kubernetes extends ComponentResource {
         super("tomasja:Kubernetes", name, args, opts);
 
         const linkerd = new Linkerd(`linkerd`, {}, {...opts, parent: this });
-        const viz = new Viz("viz", {}, { ...opts, parent: this, dependsOn: [linkerd] });
+        const viz = new Viz("viz", {}, { ...opts, parent: this, dependsOn: linkerd.ready });
         const traefikv1 = new Traefikv1("traefikv1", { }, { ...opts, parent: this, dependsOn: [linkerd] });
     }
 }

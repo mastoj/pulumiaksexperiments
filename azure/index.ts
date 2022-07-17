@@ -1,6 +1,7 @@
 import { getClientConfig } from "@pulumi/azure-native/authorization";
 import { ResourceGroup } from "@pulumi/azure-native/resources";
-import { ComponentResource, ComponentResourceOptions, Output, secret } from "@pulumi/pulumi";
+import { Provider as AzureProvider } from "@pulumi/azure-native/provider";
+import { ComponentResource, ComponentResourceOptions, Config, Output, secret } from "@pulumi/pulumi";
 import { Acr } from "./acr";
 import { Cluster } from "./cluster";
 
@@ -12,11 +13,21 @@ export class Azure extends ComponentResource {
 
     constructor(name: string, prefix: string, args: {  }, opts?: ComponentResourceOptions) {
         super("tomasja:Azure", name, args, opts);
-        const azureOptions = {...opts, parent: this};
-        const clientConfig = getClientConfig();
+        const azureConfig = new Config("azure-native");
+        const azureProvider = new AzureProvider("azure", {
+            clientId: azureConfig.require("clientId"),
+            clientSecret: azureConfig.require("clientSecret"),
+            tenantId: azureConfig.require("tenantId"),
+            subscriptionId: azureConfig.require("subscriptionId"),
+        });
+        const azureOptions = {...opts, parent: this, provider: azureProvider};
+        const clientConfig = getClientConfig(azureOptions);
         const subscriptionId = clientConfig.then(y => y.subscriptionId);
-        
-        const resourceGroup = new ResourceGroup(`${prefix}-rg`, {}, azureOptions);
+        clientConfig.then(y => console.log("Config: ", y));        
+        const resourceGroup = new ResourceGroup(`${prefix}-rg`, {
+            resourceGroupName: `${prefix}-rg`,
+            location: azureConfig.require("location"),
+        }, azureOptions);
         const cluster = new Cluster(`${prefix}-cluster`, { 
             resourceGroupName: resourceGroup.name,
             subscriptionId: subscriptionId,
