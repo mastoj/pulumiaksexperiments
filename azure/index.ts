@@ -23,7 +23,7 @@ export class Azure extends ComponentResource {
         const azureOptions = {...opts, parent: this, provider: azureProvider};
         const clientConfig = getClientConfig(azureOptions);
         const subscriptionId = clientConfig.then(y => y.subscriptionId);
-        clientConfig.then(y => console.log("Config: ", y));        
+
         const resourceGroup = new ResourceGroup(`${prefix}-rg`, {
             resourceGroupName: `${prefix}-rg`,
             location: azureConfig.require("location"),

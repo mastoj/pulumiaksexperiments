@@ -16,3 +16,4 @@ export const kubeConfig = azure.kubeConfig;
 export const getAksCredentials = 
     pulumi.all([azure.clusterName, azure.resourceGroupName])
         .apply(([clusterName, resourceGroupName]) => `az aks get-credentials -n ${clusterName} -g ${resourceGroupName}`);
+export const publicTraefikv1Ip = kubernetes.publicTraefikv1Ip;
