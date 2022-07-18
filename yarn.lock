@@ -28,6 +28,13 @@
   dependencies:
     "@pulumi/pulumi" "^3.0.0"
 
+"@pulumi/dnsimple@^3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@pulumi/dnsimple/-/dnsimple-3.3.0.tgz#695f6aaeb1190991904feeba595bda3779a1e22b"
+  integrity sha512-JCWjjl/LYuI5YMb4Zf2QAUcjWnKGrf1lovVre9br0kHM0UuUeDtQbyEp1ABpuidbjHGkzLXyPCYLr7z+yfIIOg==
+  dependencies:
+    "@pulumi/pulumi" "^3.0.0"
+
 "@pulumi/kubernetes@^3.19.4":
   version "3.19.4"
   resolved "https://registry.yarnpkg.com/@pulumi/kubernetes/-/kubernetes-3.19.4.tgz#86689126938237e9d027ede442eed100b8fbfc9b"
