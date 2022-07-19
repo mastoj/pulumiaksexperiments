@@ -38,26 +38,10 @@ export class Traefikv1 extends ComponentResource {
             ]
         }, { ...opts, parent: this });
 
-        const svc = 
+        this.publicIp = 
             chart.ready.apply(() => {
-                return k8s.core.v1.Service.get("traefikv1", "traefikv1/traefikv1", opts);
-            });  
-        this.publicIp = svc.status.loadBalancer.ingress[0].ip;
-
-        // const svc = k8s.core.v1.Service.get(`traefikv1`, 
-        //     pulumi.interpolate `${chart. traefikv1-dashboard`
-        // , opts)
-        //     // chart.ready.apply(() =>
-        //     //     kq.list("v1", "Service")
-        //     //         .filter("")
-
-
-
-        //     //     resources
-        //     //         .find((resource: any) => {
-        //     //             console.log("==> Resource: ", resource);
-        //     //             return resource.kind === "Service" && resource.metadata.name === "traefikv1";
-        //     //         })
-        //     //         .status.loadBalancer.ingress[0].ip as string);
+                    const svc = k8s.core.v1.Service.get("traefikv1", "traefikv1/traefikv1", opts);
+                    return svc.status.loadBalancer.ingress[0].ip
+                });
     }
 }
