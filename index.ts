@@ -11,7 +11,7 @@ const azure = new Azure(`${prefix}-azure`, prefix, {});
 const k8sProvider = new KubernetesProvider(`${prefix}-k8s`, { 
     kubeconfig: azure.kubeConfig,
 });
-const kubernetes = new Kubernetes(`${prefix}-kubernetes`, {}, { provider: k8sProvider });
+const kubernetes = new Kubernetes(`${prefix}-kubernetes`, {}, { provider: k8sProvider, dependsOn: [azure] });
 const dnsimple = new Dnsimple(`${prefix}-dnsimple`, { traefikv1Ip: kubernetes.publicTraefikv1Ip });
 
 export const kubeConfig = azure.kubeConfig;
