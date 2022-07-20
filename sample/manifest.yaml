@@ -76,6 +76,7 @@ metadata:
   namespace: emojivoto
   annotations:
     kubernetes.io/ingress.class: traefik
+    pulumi.com/skipAwait: "true"
 spec:
   rules:
   - host: emoji.pulumiaksdemo.2mas.xyz
