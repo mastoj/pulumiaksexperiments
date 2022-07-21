@@ -74,7 +74,7 @@ export class Cluster extends ComponentResource {
             dnsPrefix: "dns",
             agentPoolProfiles: [
                 {
-                    name: `agentpool2`,
+                    name: `agentpool`,
                     mode: "System",
                     count: 2,
                     minCount: 2,
