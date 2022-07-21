@@ -74,6 +74,6 @@ export class Linkerd extends ComponentResource {
             ...opts,
             parent: this,
         });
-        this.ready = linkerd.ready;
+        this.ready = linkerd.resources.apply(t => Object.values(t));
     }
 }

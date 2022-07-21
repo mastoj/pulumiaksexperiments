@@ -49,7 +49,7 @@ export class Cluster extends ComponentResource {
 
         const subnet = new Subnet(`${prefix}-subnet`, {
             resourceGroupName: resourceGroupName,
-            addressPrefix: "10.0.0.0/24",
+            addressPrefix: "10.0.0.0/20",
             virtualNetworkName: vnet.name,
         }, azureOptions);
         const subnetAssignment = new RoleAssignment("subnet-permissions", 
