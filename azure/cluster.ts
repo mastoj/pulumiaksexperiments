@@ -84,6 +84,7 @@ export class Cluster extends ComponentResource {
                     maxPods: 110,
                     vnetSubnetID: subnet.id,
                     enableAutoScaling: true,
+                    orchestratorVersion: kubernetesVersion,
                 }
             ],
             servicePrincipalProfile: {
