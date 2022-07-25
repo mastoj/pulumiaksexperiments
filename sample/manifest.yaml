@@ -87,6 +87,14 @@ spec:
         backend:
           serviceName: web-svc
           servicePort: http
+  - host: emoji.pulumiaksdemo2.2mas.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Exact
+        backend:
+          serviceName: web-svc
+          servicePort: http
   - host: emoji2.pulumiaksdemo.2mas.xyz
     http:
       paths:
