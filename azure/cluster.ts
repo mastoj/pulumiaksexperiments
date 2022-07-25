@@ -63,7 +63,8 @@ export class Cluster extends ComponentResource {
         let delayedAdSpPasswordValue = adSpPassword.value.apply(async (val) => {
             // Wait for 30s
             console.log("Waiting for 30s for AD Service Principal eventual consistency...");
-            await new Promise(resolve => setTimeout(resolve, 30000));
+            //await new Promise(resolve => setTimeout(resolve, 30000));
+            await new Promise(resolve => setTimeout(resolve, 30));
             return val;
         });
 

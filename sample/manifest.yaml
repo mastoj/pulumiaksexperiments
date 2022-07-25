@@ -86,6 +86,13 @@ spec:
         backend:
           serviceName: web-svc
           servicePort: http
+  - host: emoji2.pulumiaksdemo.2mas.xyz
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web-svc
+          servicePort: http
 ---
 apiVersion: apps/v1
 kind: Deployment
