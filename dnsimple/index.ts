@@ -23,7 +23,7 @@ export class Dnsimple extends ComponentResource {
             name: "*.pulumiaksdemo",
             ttl: "3600",
             type: RecordTypes.A,
-            value: args.traefikv1Ip,
+            value: args.traefikv2Ip,
             // value: pulumi.interpolate `${args.traefikv1Ip} *.pulumiaksdemo.2mas.xyz`,
 
         }, dnsimpleOptions);

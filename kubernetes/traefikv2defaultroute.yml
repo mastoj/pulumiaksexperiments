@@ -1,7 +1,9 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
- name: fallback
+  name: fallback
+annotations:
+  traefik.ingress.kubernetes.io/router.priority: "1" 
 
 spec:
   defaultBackend:

@@ -47,6 +47,19 @@ export class Traefikv2 extends ComponentResource {
             ]
         }, { ...opts, parent: this, dependsOn: namespace });
 
+        const traefikDefaultRoute = new ConfigFile("traefikdefaultroute", {
+            file: "kubernetes/traefikv2defaultroute.yml",
+            transformations: [
+                (obj) => {
+                    obj.metadata.namespace = "traefikv1";
+                    obj.metadata.annotations = {
+                        ...obj.metadata.annotations,
+                        "pulumi.com/skipAwait": "true"
+                    }
+                }
+            ]
+        }, { ...opts, parent: this });
+
         const traefikv2Resources = traefik.resources.apply(t => Object.values(t));
 
         const svc = k8s.core.v1.Service.get("traefikv2", "traefikv2/traefikv2", {...opts, dependsOn: traefikv2Resources, parent: traefik});
