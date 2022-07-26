@@ -16,15 +16,6 @@ export class Traefikv2 extends ComponentResource {
             }
         }, { ...opts, parent: this });
 
-        // const traefik = new Chart("traefikv2", {
-        //     chart: "traefik",
-        //     namespace: "traefikv2",
-        //     // repo: "traefik",
-        //     fetchOpts: {
-        //         repo: "https://helm.traefik.io/traefik",
-        //     }
-        // })
-
         const traefik = new ConfigFile("traefik", {
             file: "kubernetes/traefikv2.yml",
             transformations: [
@@ -46,19 +37,6 @@ export class Traefikv2 extends ComponentResource {
                 }
             ]
         }, { ...opts, parent: this, dependsOn: namespace });
-
-        const traefikDefaultRoute = new ConfigFile("traefikdefaultroute", {
-            file: "kubernetes/traefikv2defaultroute.yml",
-            transformations: [
-                (obj) => {
-                    obj.metadata.namespace = "traefikv1";
-                    obj.metadata.annotations = {
-                        ...obj.metadata.annotations,
-                        "pulumi.com/skipAwait": "true"
-                    }
-                }
-            ]
-        }, { ...opts, parent: this });
 
         const traefikv2Resources = traefik.resources.apply(t => Object.values(t));
 

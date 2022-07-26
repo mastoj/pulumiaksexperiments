@@ -69,39 +69,28 @@ spec:
     app: web-svc
   type: ClusterIP
 ---
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: emoji-web
+  name: emoji-web2
   namespace: emojivoto
   annotations:
     kubernetes.io/ingress.class: traefik
     pulumi.com/skipAwait: "true"
+
 spec:
   rules:
-  - host: emoji.pulumiaksdemo.2mas.xyz
-    http:
-      paths:
-      - path: /
-        pathType: Exact
-        backend:
-          serviceName: web-svc
-          servicePort: http
-  - host: emoji.pulumiaksdemo2.2mas.xyz
-    http:
-      paths:
-      - path: /
-        pathType: Exact
-        backend:
-          serviceName: web-svc
-          servicePort: http
-  - host: emoji2.pulumiaksdemo.2mas.xyz
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: web-svc
-          servicePort: http
+    - host: emoji.pulumiaksdemo.2mas.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name:  web-svc
+                port:
+                  number: 80
+---
 ---
 apiVersion: apps/v1
 kind: Deployment
